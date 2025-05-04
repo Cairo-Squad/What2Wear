@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.0.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.0"
+    kotlin("plugin.serialization") version "1.8.20"
 }
 
 group = "org.example"
@@ -16,6 +17,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:2.3.13")
     implementation("ch.qos.logback:logback-classic:1.5.13")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
     testImplementation(kotlin("test"))
     testImplementation("com.google.truth:truth:1.4.4")
