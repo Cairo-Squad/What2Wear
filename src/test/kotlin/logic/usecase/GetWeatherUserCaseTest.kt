@@ -17,11 +17,13 @@ class GetWeatherUserCaseTest {
 
     lateinit var weatherRepository: WeatherRepository
     lateinit var getWeatherUserCase: GetWeatherUserCase
+    lateinit var validator : WeatherValidator
 
     @BeforeEach
     fun setUp() {
         weatherRepository = mockk()
-        getWeatherUserCase = GetWeatherUserCase(weatherRepository)
+        validator = WeatherValidator()
+        getWeatherUserCase = GetWeatherUserCase(weatherRepository, validator)
     }
 
     @Test
