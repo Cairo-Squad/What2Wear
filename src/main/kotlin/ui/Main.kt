@@ -1,4 +1,4 @@
-package org.example
+package org.example.ui
 
 fun main() {
     println("Hello World!")
