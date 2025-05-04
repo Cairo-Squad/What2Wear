@@ -7,6 +7,10 @@ class GetCityLocationByNameUseCase(
     private val weatherRepository: WeatherRepository
 ) {
     suspend fun execute(cityName: String): CityLocation {
-        return CityLocation(name = "Egypt", latitude = 0.0, longitude = 0.0)
+        if (cityName.isBlank()) {
+            throw IllegalArgumentException("Please enter a valid city name!")
+        }
+
+        return weatherRepository.getCityLocationByName(cityName)
     }
 }
