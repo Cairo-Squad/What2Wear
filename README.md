@@ -16,4 +16,4 @@ Works entirely from the command line 🖥️
 
 🔗 APIs
 
-This project uses Open-Meteo or an alternative free weather API to fetch forecast data. More details can be found [Open-Meteo](https://open-meteo.com)
+This project uses Open-Meteo or an alternative free weather API to fetch forecast data. More details can be found here [Open-Meteo](https://open-meteo.com)
