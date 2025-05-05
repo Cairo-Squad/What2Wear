@@ -11,20 +11,20 @@ class ClothingSuggestion {
         } else {
             timeOfDay = "night"
         }
-        val temp = current.temperature
+        val temperature = current.temperature
 
         val suggestion = when {
-            temp < 5 -> if (timeOfDay == "morning")
+            temperature < 5 -> if (timeOfDay == "morning")
                 "❄️ Cold morning: Wear coat 🧥 and hat 👒"
             else
                 "🌙 Freezing night: Coat 🧥, scarf 🧣, gloves 🧤, and hat 👒"
 
-            temp < 15 -> if (timeOfDay == "morning")
+            temperature < 15 -> if (timeOfDay == "morning")
                 "🌤️ Cool morning: Jacket 🧥 Hoodie 👚 with boots 👢"
             else
                 "🌙 Cold night: Hoodie 👚 and scarf 🧣"
 
-            temp < 25 -> if (timeOfDay == "morning")
+            temperature < 25 -> if (timeOfDay == "morning")
                 "☀️ Nice morning: Top 👚 and trousers 👖"
             else
                 "🌙 Mild night: Hoodie  👚 and trousers 👖"
@@ -35,6 +35,6 @@ class ClothingSuggestion {
                 "🌙 Warm night: Wear a light dress 👗"
         }
 
-        return "$hour:00 - ${temp}°C: $suggestion"
+        return "$hour:00 - ${temperature}°C: $suggestion"
     }
 }
