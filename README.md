@@ -1,5 +1,7 @@
 🌦️ Weather-Based Outfit Recommender CLI 👕🧥
+
 📌 Overview
+
 This CLI app provides outfit suggestions based on current weather conditions. Using a free weather API like Open-Meteo, it helps users dress appropriately by considering temperature, rain, and other weather factors. Perfect for those who never know whether to grab an umbrella or wear shorts! ☂️🩳
 
 🚀 Features
