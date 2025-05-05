@@ -6,7 +6,7 @@ import logic.repository.WeatherRepository
 class GetCityLocationByNameUseCase(
     private val weatherRepository: WeatherRepository
 ) {
-    suspend fun execute(cityName: String): CityLocation {
+    suspend fun getCityLocation(cityName: String): CityLocation {
         if (cityName.isBlank()) {
             throw IllegalArgumentException("Please enter a valid city name!")
         }

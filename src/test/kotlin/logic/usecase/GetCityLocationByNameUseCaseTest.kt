@@ -29,7 +29,7 @@ class GetCityLocationByNameUseCaseTest {
 
             // When, Then
             assertThrows<Exception> {
-                getCityLocationByNameUseCase.execute("Egypt")
+                getCityLocationByNameUseCase.getCityLocation("Egypt")
             }
         }
     }
@@ -39,7 +39,7 @@ class GetCityLocationByNameUseCaseTest {
         runTest {
             // Given, When, Then
             assertThrows<IllegalArgumentException> {
-                getCityLocationByNameUseCase.execute(" ")
+                getCityLocationByNameUseCase.getCityLocation(" ")
             }
         }
     }
@@ -51,7 +51,7 @@ class GetCityLocationByNameUseCaseTest {
             coEvery { weatherRepository.getCityLocationByName(any()) } returns getValidCityLocation()
 
             // When
-            val result = getCityLocationByNameUseCase.execute("Cairo")
+            val result = getCityLocationByNameUseCase.getCityLocation("Cairo")
 
             // Then
             assertThat(result).isEqualTo(getValidCityLocation())
