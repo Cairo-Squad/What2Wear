@@ -1,6 +1,6 @@
 package logic.usecase
 
-import data.dto.LatLong
+import logic.model.LatLong
 import logic.model.CurrentWeather
 import logic.repository.WeatherRepository
 
@@ -9,7 +9,8 @@ class GetWeatherUserCase(
     private val validator: WeatherValidator = WeatherValidator()
 ) {
     suspend fun getWeather(latLong: LatLong): CurrentWeather {
-        validator.validate(repository.fetchWeather(latLong))
-        return repository.fetchWeather(latLong)
+        val currentWeather = repository.fetchWeather(latLong)
+        validator.validate(currentWeather)
+        return currentWeather
     }
 }

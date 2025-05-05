@@ -1,6 +1,6 @@
 package logic.repository
 
-import data.dto.LatLong
+import logic.model.LatLong
 import logic.model.CurrentWeather
 
 interface WeatherRepository {
