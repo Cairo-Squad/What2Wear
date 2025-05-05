@@ -8,7 +8,7 @@ class ClothingSuggestionTest {
     private val clothingSuggestion = ClothingSuggestion()
 
     @Test
-    fun `given  cold morning when clothingSuggestion return clothing suggestion for cold morning`() {
+    fun `should suggestt clothes for cold morning when temperature is cold`() {
         // Given
         val currentWeather = FakeData.allWeatherData
 
@@ -20,7 +20,7 @@ class ClothingSuggestionTest {
     }
 
     @Test
-    fun `given clothing suggestionwhen clothingSuggestion return clothing suggestion forfreezing night`() {
+    fun `should suggest clothes for freezing night when temperature is Freezing `() {
         // Given
         val currentWeather = FakeData.allWeatherData
 
@@ -32,7 +32,7 @@ class ClothingSuggestionTest {
     }
 
     @Test
-    fun `given clothing suggestion when clothingSuggestion return clothing suggestion for cool morning`() {
+    fun `should suggest clothes for cool morning when temperature is  cool`() {
         // Given
         val currentWeather = FakeData.allWeatherData
 
@@ -44,7 +44,7 @@ class ClothingSuggestionTest {
     }
 
     @Test
-    fun `given  clothing suggestion when clothingSuggestion return clothing suggestion for cool night`() {
+    fun `should suggest clothes for cold night when temperature is cool`() {
         // Given
         val currentWeather = FakeData.allWeatherData
 
@@ -56,7 +56,7 @@ class ClothingSuggestionTest {
     }
 
     @Test
-    fun `given  clothing suggestion when clothingSuggestion return clothing suggestion for nice morning`() {
+    fun `should suggest clothes for nice morning when temperature is sunny`() {
         // Given
         val currentWeather = FakeData.allWeatherData
 
@@ -68,7 +68,7 @@ class ClothingSuggestionTest {
     }
 
     @Test
-    fun `given clothing suggestion when clothingSuggestion return clothing suggestion for warm night`() {
+    fun `should suggest clothes for warm night when temperature is hot  `() {
         // Given
         val currentWeather = FakeData.allWeatherData
 
