@@ -3,9 +3,9 @@ package logic.usecase
 import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 
-class ClothingSuggestionTest {
+class ClothingSuggestionUseCaseTest {
 
-    private val clothingSuggestion = ClothingSuggestion()
+    private val clothingSuggestion = ClothingSuggestionUseCase()
 
     @Test
     fun `should suggestt clothes for cold morning when temperature is cold`() {
