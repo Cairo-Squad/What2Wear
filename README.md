@@ -1,4 +1,4 @@
-🌦️ Weather-Based Outfit Recommender CLI 👕🧥
+# **🌦️ Weather-Based Outfit Recommender CLI 👕🧥**
 
 📌 Overview
 
