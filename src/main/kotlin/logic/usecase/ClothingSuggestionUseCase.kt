@@ -3,14 +3,15 @@ package logic.usecase
 import logic.model.CurrentWeather
 
 class ClothingSuggestionUseCase {
-    fun suggestClothes(current : CurrentWeather) : String {
-        val hour = current.time.hour
-        val timeOfDay = if (hour in 5..16) "morning" else "night"
+    fun suggestClothes(currentWeather : CurrentWeather) : String {
+        val hour = currentWeather.time.hour
+        val timeOfDay =
+            if (hour in WeatherConstants.MORNING_START_HOUR..WeatherConstants.MORNING_END_HOUR) "morning" else "night"
 
-        val temperature = current.temperature
+        val temperature = currentWeather.temperature
 
         val suggestion = when {
-            temperature < 5 -> {
+            temperature < WeatherConstants.FREEZING_TEMP -> {
                 if (timeOfDay == "morning") {
                     "❄️ Cold morning: Wear coat 🧥 and hat 👒"
                 } else {
@@ -18,7 +19,7 @@ class ClothingSuggestionUseCase {
                 }
             }
 
-            temperature < 15 -> {
+            temperature < WeatherConstants.COLD_TEMP -> {
                 if (timeOfDay == "morning") {
                     "🌤️ Cool morning: Jacket 🧥 Hoodie 👚 with boots 👢"
 
@@ -27,7 +28,7 @@ class ClothingSuggestionUseCase {
                 }
             }
 
-            temperature < 25 -> {
+            temperature < WeatherConstants.WARM_TEMP -> {
                 if (timeOfDay == "morning") {
                     "☀️ Nice morning: Top 👚 and trousers 👖"
 
@@ -45,7 +46,6 @@ class ClothingSuggestionUseCase {
                 }
             }
         }
-
         return "$hour:00 - ${temperature}°C: $suggestion"
     }
 }
