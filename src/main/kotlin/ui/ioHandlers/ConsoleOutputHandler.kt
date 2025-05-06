@@ -9,4 +9,8 @@ class ConsoleOutputHandler : OutputHandler {
     override fun printlnMessage(message: Any?) {
         println(message)
     }
+
+    override fun printlnMessage() {
+        println()
+    }
 }
