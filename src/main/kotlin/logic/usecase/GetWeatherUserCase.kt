@@ -9,7 +9,7 @@ class GetWeatherUserCase(
     private val validator: WeatherValidator = WeatherValidator()
 ) {
     suspend fun getWeather(latLong: LatLong): CurrentWeather {
-        val currentWeather = repository.fetchWeather(latLong)
+        val currentWeather = repository.getWeatherFromRemote(latLong)
         validator.validate(currentWeather)
         return currentWeather
     }
