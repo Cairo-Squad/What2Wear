@@ -3,6 +3,7 @@ package logic.usecase
 import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 import logic.model.CurrentWeather
+import logic.model.SuggestionClothes
 import java.time.LocalTime
 
 class ClothingSuggestionUseCaseTest {
@@ -15,11 +16,17 @@ class ClothingSuggestionUseCaseTest {
         val currentWeather = CurrentWeather(temperature = 2.0, time = LocalTime.of(7, 0), weatherCode = 1)
 
         // When
-        val suggestion = clothingSuggestion.suggestClothes(currentWeather)
+        val clothingSuggestion = clothingSuggestion.suggestClothes(currentWeather)
 
         // Then
-        assertThat(suggestion).isEqualTo("7:00 - 2.0°C: ❄️ Cold morning: Wear coat 🧥 and hat 👒")
-    }
+        assertThat(clothingSuggestion).isEqualTo(
+            SuggestionClothes(
+                hour = 7,
+                temperature = 2.0,
+                timeOfDay = "morning",
+                suggestionClothes = listOf("Coat 🧥", "Hat 👒")
+            )
+        )    }
 
     @Test
     fun `should suggest clothes for freezing night when temperature is Freezing `() {
@@ -28,11 +35,17 @@ class ClothingSuggestionUseCaseTest {
 
 
         // When
-        val suggestion = clothingSuggestion.suggestClothes(currentWeather)
+        val suggestionClothes = clothingSuggestion.suggestClothes(currentWeather)
 
         // Then
-        assertThat(suggestion).isEqualTo("22:00 - -3.0°C: 🌙 Freezing night: Coat 🧥, scarf 🧣, gloves 🧤, and hat 👒")
-    }
+        assertThat(suggestionClothes).isEqualTo(
+            SuggestionClothes(
+                hour = 22,
+                temperature = -3.0,
+                timeOfDay = "night",
+                suggestionClothes = listOf("Coat 🧥", "Scarf 🧣", "Gloves 🧤", "Hat 👒")
+            )
+        )    }
 
     @Test
     fun `should suggest clothes for cool morning when temperature is  cool`() {
@@ -41,11 +54,17 @@ class ClothingSuggestionUseCaseTest {
 
 
         // When
-        val suggestion = clothingSuggestion.suggestClothes(currentWeather)
+        val clothingSuggestion = clothingSuggestion.suggestClothes(currentWeather)
 
         // Then
-        assertThat(suggestion).isEqualTo("8:00 - 10.0°C: 🌤️ Cool morning: Jacket 🧥 Hoodie 👚 with boots 👢")
-    }
+        assertThat(clothingSuggestion).isEqualTo(
+            SuggestionClothes(
+                hour = 8,
+                temperature = 10.0,
+                timeOfDay = "morning",
+                suggestionClothes = listOf("Jacket 🧥", "Hoodie 👚", "Boots 👢")
+            )
+        )    }
 
     @Test
     fun `should suggest clothes for cold night when temperature is cool`() {
@@ -54,11 +73,17 @@ class ClothingSuggestionUseCaseTest {
 
 
         // When
-        val suggestion = clothingSuggestion.suggestClothes(currentWeather)
+        val clothingSuggestion = clothingSuggestion.suggestClothes(currentWeather)
 
         // Then
-        assertThat(suggestion).isEqualTo("20:00 - 12.0°C: 🌙 Cold night: Hoodie 👚 and scarf 🧣")
-    }
+        assertThat(clothingSuggestion).isEqualTo(
+            SuggestionClothes(
+                hour = 20,
+                temperature = 12.0,
+                timeOfDay = "night",
+                suggestionClothes = listOf("Hoodie 👚", "Scarf 🧣")
+            )
+        )    }
 
     @Test
     fun `should suggest clothes for nice morning when temperature is sunny`() {
@@ -67,10 +92,17 @@ class ClothingSuggestionUseCaseTest {
 
 
         // When
-        val suggestion = clothingSuggestion.suggestClothes(currentWeather)
+        val clothingSuggestion = clothingSuggestion.suggestClothes(currentWeather)
 
         // Then
-        assertThat(suggestion).isEqualTo("10:00 - 20.0°C: ☀️ Nice morning: Top 👚 and trousers 👖")
+        assertThat(clothingSuggestion).isEqualTo(
+            SuggestionClothes(
+                hour = 10,
+                temperature = 20.0,
+                timeOfDay = "morning",
+                suggestionClothes = listOf("Top 👚", "Trousers 👖")
+            )
+        )
     }
 
     @Test
@@ -80,9 +112,16 @@ class ClothingSuggestionUseCaseTest {
 
 
         // When
-        val suggestion = clothingSuggestion.suggestClothes(currentWeather)
+        val clothingSuggestion = clothingSuggestion.suggestClothes(currentWeather)
 
         // Then
-        assertThat(suggestion).isEqualTo("23:00 - 28.0°C: 🌙 Warm night: Wear a light dress 👗")
+        assertThat(clothingSuggestion).isEqualTo(
+            SuggestionClothes(
+                hour = 23,
+                temperature = 28.0,
+                timeOfDay = "night",
+                suggestionClothes = listOf("Light Dress 👗")
+            )
+        )
     }
 }
