@@ -1,13 +1,17 @@
 package data.repository
 
+import data.repository.mapper.toCurrentWeather
+import data.utils.NetworkException
 import kotlinx.datetime.LocalTime
 import logic.model.LatLong
 import logic.model.CurrentWeather
 import logic.repository.WeatherRepository
 
-class WeatherRepositoryImpl: WeatherRepository {
-    override suspend fun fetchWeather(latLong: LatLong): CurrentWeather {
-        return CurrentWeather(1.1, LocalTime(12,0),1)
+class WeatherRepositoryImpl(
+    private val remoteDataSource: RemoteDataSource
+): WeatherRepository {
+    override suspend fun getWeatherFromRemote(latLong: LatLong): CurrentWeather {
+        return remoteDataSource.getWeatherByLocation(latLong).currentWeather?.toCurrentWeather()
+            ?: throw NetworkException()
     }
-
 }
