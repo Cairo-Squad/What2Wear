@@ -1,20 +1,23 @@
 package data.dto
 
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CurrentWeatherDto(
+data class CurrentWeatherUnits(
     @SerialName("interval")
-    val interval: Int?,
+    val interval: String?,
     @SerialName("is_day")
-    val isDay: Int?,
+    val isDay: String?,
     @SerialName("temperature")
-    val temperature: Double?,
+    val temperature: String?,
     @SerialName("time")
     val time: String?,
     @SerialName("weathercode")
-    val weatherCode: Int?,
+    val weathercode: String?,
+    @SerialName("winddirection")
+    val winddirection: String?,
     @SerialName("windspeed")
-    val windSpeed: Double?
+    val windspeed: String?
 )
