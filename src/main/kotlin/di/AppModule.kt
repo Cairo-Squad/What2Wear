@@ -1,10 +1,10 @@
 package di
 
 import data.datasource.RemoteDataSourceImpl
-import data.repository.RemoteDataSource
-import data.repository.WeatherRepositoryImpl
+import data.repository.*
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
+import logic.repository.WeatherRepository
 import org.koin.dsl.module
 import ui.ClothsApp
 import ui.feature.*
