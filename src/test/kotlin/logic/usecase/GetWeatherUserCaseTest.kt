@@ -1,6 +1,7 @@
 package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
+import data.utils.NetworkException
 import logic.model.LatLong
 import data.utils.TemperatureOutOfBoundException
 import data.utils.WeatherStateException
@@ -32,7 +33,7 @@ class GetWeatherUserCaseTest {
         // Given
         val weather = CurrentWeather(temperature = 22.5, time = LocalTime(12,0), weatherCode = 3)
 
-        coEvery { weatherRepository.fetchWeather(any()) } returns weather
+        coEvery { weatherRepository.getWeatherFromRemote(any()) } returns weather
 
         // When
         val result = getWeatherUserCase.getWeather(LatLong(51.5, -0.1))
@@ -42,12 +43,12 @@ class GetWeatherUserCaseTest {
     }
 
     @Test
-    fun `should throw an exception, when repository fails`() = runTest {
+    fun `should throw NetworkException, when repository fails`() = runTest {
         // Given
-        coEvery { weatherRepository.fetchWeather(any()) } throws Exception()
+        coEvery { weatherRepository.getWeatherFromRemote(any()) } throws NetworkException()
 
         // When & Then
-        assertThrows<Exception> {
+        assertThrows<NetworkException> {
             getWeatherUserCase.getWeather(LatLong(99.0, 12.2))
         }
     }
@@ -57,7 +58,7 @@ class GetWeatherUserCaseTest {
         // Given
         val weather = CurrentWeather(temperature = 999.5, time = LocalTime(12,0), weatherCode = 3)
 
-        coEvery { weatherRepository.fetchWeather(any()) } returns weather
+        coEvery { weatherRepository.getWeatherFromRemote(any()) } returns weather
 
         // When & Then
         assertThrows<TemperatureOutOfBoundException> {
@@ -71,7 +72,7 @@ class GetWeatherUserCaseTest {
         // Given
         val weather = CurrentWeather(temperature = 44.5, time = LocalTime(12,0), weatherCode = 1000)
 
-        coEvery { weatherRepository.fetchWeather(any()) } returns weather
+        coEvery { weatherRepository.getWeatherFromRemote(any()) } returns weather
 
         // When & Then
         assertThrows<WeatherStateException> {
