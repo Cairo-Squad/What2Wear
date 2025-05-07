@@ -1,9 +1,10 @@
 package logic.usecase
 
 import logic.model.CurrentWeather
+import logic.model.SuggestionClothes
 
 class ClothingSuggestionUseCase {
-    fun suggestClothes(currentWeather : CurrentWeather) : String {
+    fun suggestClothes(currentWeather : CurrentWeather) : SuggestionClothes {
         val hour = currentWeather.time.hour
         val timeOfDay =
             if (hour in WeatherConstants.MORNING_START_HOUR..WeatherConstants.MORNING_END_HOUR) "morning" else "night"
@@ -13,39 +14,44 @@ class ClothingSuggestionUseCase {
         val suggestion = when {
             temperature < WeatherConstants.FREEZING_TEMP -> {
                 if (timeOfDay == "morning") {
-                    "❄️ Cold morning: Wear coat 🧥 and hat 👒"
+                    listOf("Coat 🧥", "Hat 👒")
                 } else {
-                    "🌙 Freezing night: Coat 🧥, scarf 🧣, gloves 🧤, and hat 👒"
+                    listOf("Coat 🧥", "Scarf 🧣", "Gloves 🧤", "Hat 👒")
                 }
             }
 
             temperature < WeatherConstants.COLD_TEMP -> {
                 if (timeOfDay == "morning") {
-                    "🌤️ Cool morning: Jacket 🧥 Hoodie 👚 with boots 👢"
+                    listOf("Jacket 🧥", "Hoodie 👚", "Boots 👢")
 
                 } else {
-                    "🌙 Cold night: Hoodie 👚 and scarf 🧣"
+                    listOf("Hoodie 👚", "Scarf 🧣")
                 }
             }
 
             temperature < WeatherConstants.WARM_TEMP -> {
                 if (timeOfDay == "morning") {
-                    "☀️ Nice morning: Top 👚 and trousers 👖"
+                    listOf("Top 👚", "Trousers 👖")
 
                 } else {
-                    "🌙 Mild night: Hoodie  👚 and trousers 👖"
+                    listOf("Hoodie 👚", "Trousers 👖")
                 }
             }
 
             else -> {
                 if (timeOfDay == "morning") {
-                    "🔥 Hot morning: Wear a dress 👗"
+                    listOf("Dress 👗")
 
                 } else {
-                    "🌙 Warm night: Wear a light dress 👗"
+                    listOf("Light Dress 👗")
                 }
             }
         }
-        return "$hour:00 - ${temperature}°C: $suggestion"
+        return SuggestionClothes(
+            hour = hour,
+            temperature = temperature,
+            timeOfDay = timeOfDay,
+            suggestionClothes = suggestion
+        )
     }
 }
