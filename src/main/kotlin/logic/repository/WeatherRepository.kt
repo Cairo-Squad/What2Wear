@@ -5,6 +5,6 @@ import logic.model.CurrentWeather
 import logic.model.CityLocation
 
 interface WeatherRepository {
-    suspend fun fetchWeather(latLong: LatLong): CurrentWeather
     suspend fun getCityLocationByName(cityName: String): CityLocation
+    suspend fun getWeatherFromRemote(latLong: LatLong): CurrentWeather
 }

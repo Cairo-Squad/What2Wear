@@ -1,7 +1,7 @@
 package logic.usecase
 
-import data.utils.TemperatureOutOfBoundException
-import data.utils.WeatherStateException
+import logic.utils.TemperatureOutOfBoundException
+import logic.utils.WeatherStateException
 import logic.Constants.ABSOLUTE_MAX_WEATHER
 import logic.Constants.ABSOLUTE_MIN_WEATHER
 import logic.model.CurrentWeather
