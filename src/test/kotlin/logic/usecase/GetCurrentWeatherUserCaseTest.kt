@@ -2,7 +2,7 @@ package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
 import logic.utils.NetworkException
-import logic.model.LatLong
+import logic.model.CityLocation
 import logic.utils.TemperatureOutOfBoundException
 import logic.utils.WeatherStateException
 import io.mockk.coEvery
@@ -36,7 +36,7 @@ class GetCurrentWeatherUseCaseTest {
         coEvery { weatherRepository.getWeatherFromRemote(any()) } returns weather
 
         // When
-        val result = getCurrentWeatherUseCase.getCurrentWeather(LatLong(51.5, -0.1))
+        val result = getCurrentWeatherUseCase.getCurrentWeather(CityLocation(51.5, -0.1))
 
         // Then
         assertThat(result).isEqualTo(weather)
@@ -49,7 +49,7 @@ class GetCurrentWeatherUseCaseTest {
 
         // When & Then
         assertThrows<NetworkException> {
-            getCurrentWeatherUseCase.getCurrentWeather(LatLong(99.0, 12.2))
+            getCurrentWeatherUseCase.getCurrentWeather(CityLocation(99.0, 12.2))
         }
     }
 
@@ -62,7 +62,7 @@ class GetCurrentWeatherUseCaseTest {
 
         // When & Then
         assertThrows<TemperatureOutOfBoundException> {
-            getCurrentWeatherUseCase.getCurrentWeather(LatLong(51.5, -0.1))
+            getCurrentWeatherUseCase.getCurrentWeather(CityLocation(51.5, -0.1))
         }
     }
 
@@ -75,7 +75,7 @@ class GetCurrentWeatherUseCaseTest {
 
         // When & Then
         assertThrows<WeatherStateException> {
-            getCurrentWeatherUseCase.getCurrentWeather(LatLong(51.5, -0.1))
+            getCurrentWeatherUseCase.getCurrentWeather(CityLocation(51.5, -0.1))
         }
     }
 }
