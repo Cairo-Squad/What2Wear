@@ -1,20 +1,13 @@
 package ui.feature
 
-import kotlinx.coroutines.runBlocking
-import logic.usecase.ClothingSuggestionUseCase
-import logic.usecase.GetCityLocationByNameUseCase
-import logic.usecase.GetCurrentWeatherUseCase
 import ui.CliConstants
 import ui.ioHandlers.OutputHandler
 import ui.ioHandlers.UserInputHandler
-import ui.utils.getPrintableString
 
 class ChooseCityFeatureUI(
     private val outputHandler: OutputHandler,
     private val userInputHandler: UserInputHandler,
-    private val getCityLocationByNameUseCase: GetCityLocationByNameUseCase,
-    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
-    private val clothingSuggestionUseCase: ClothingSuggestionUseCase,
+    private val weatherSuggestionExecutor: WeatherSuggestionExecutor
 ) {
     private val cities = listOf(
         "Cairo",
@@ -40,21 +33,10 @@ class ChooseCityFeatureUI(
     )
 
     fun execute() {
+        outputHandler.printlnMessage()
         showAvailableCities()
         val selectedCityIndex = getCityNumberInput()
-        outputHandler.printlnMessage(CliConstants.LOADING_MESSAGE)
-        runBlocking {
-            try {
-                val cityLocation = getCityLocationByNameUseCase.getCityLocation(cities[selectedCityIndex])
-                val cityCurrentWeather = getCurrentWeatherUseCase.getCurrentWeather(cityLocation)
-                val suggestion = clothingSuggestionUseCase.suggestClothes(cityCurrentWeather)
-                outputHandler.printlnMessage()
-                outputHandler.printlnMessage(CliConstants.SUGGESTION_TITLE)
-                outputHandler.printlnMessage(suggestion.getPrintableString())
-            } catch (exception: Exception) {
-                outputHandler.printlnMessage(CliConstants.UNEXPECTED_ERROR_MESSAGE)
-            }
-        }
+        weatherSuggestionExecutor.executeForCity(cities[selectedCityIndex])
     }
 
     private fun showAvailableCities() {
@@ -69,11 +51,11 @@ class ChooseCityFeatureUI(
         outputHandler.printMessage(CliConstants.ENTER_CITY_NUMBER_MESSAGE)
         while (true) {
             val userInput = userInputHandler.getUserInput()
-            val parsedAmount = userInput?.toIntOrNull()
-            if (parsedAmount == null || parsedAmount !in 1..cities.size) {
+            val parsedNumber = userInput?.toIntOrNull()
+            if (parsedNumber == null || parsedNumber !in 1..cities.size) {
                 outputHandler.printMessage(CliConstants.ENTER_VALID_CITY_NUMBER_MESSAGE)
             } else {
-                return parsedAmount - 1
+                return parsedNumber - 1
             }
         }
     }
