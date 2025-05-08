@@ -1,4 +1,4 @@
-package data.utils
+package logic.utils
 
 open class WeatherException(message: String) : Exception(message)
 class TemperatureOutOfBoundException : WeatherException("Temperature should be between -90 to 60")

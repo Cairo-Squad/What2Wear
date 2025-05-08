@@ -6,7 +6,7 @@ import logic.model.CityLocation
 import logic.repository.WeatherRepository
 import data.repository.mapper.toCityLocation
 import data.repository.mapper.toCurrentWeather
-import data.utils.NetworkException
+import logic.utils.NetworkException
 
 class WeatherRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
