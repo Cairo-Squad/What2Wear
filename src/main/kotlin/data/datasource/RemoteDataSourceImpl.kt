@@ -9,7 +9,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import logic.model.LatLong
+import logic.model.CityLocation
 
 class RemoteDataSourceImpl(
     private val ktorClient: HttpClient
@@ -20,12 +20,12 @@ class RemoteDataSourceImpl(
         return Json.decodeFromString<CityLocationResponse>(response.bodyAsText())
     }
 
-    override suspend fun getWeatherByLocation(latLong: LatLong): CurrentWeatherResponse {
+    override suspend fun getWeatherByLocation(cityLocation: CityLocation): CurrentWeatherResponse {
         val response =
             ktorClient.get {
                 url(WEATHER_BASE_URL)
-                parameter("latitude", latLong.latitude)
-                parameter("longitude", latLong.longitude)
+                parameter("latitude", cityLocation.latitude)
+                parameter("longitude", cityLocation.longitude)
                 parameter("current_weather", "true")
             }
         return Json.decodeFromString<CurrentWeatherResponse>(response.bodyAsText())
