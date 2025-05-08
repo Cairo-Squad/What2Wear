@@ -1,10 +1,10 @@
 package logic.usecase
 
 import com.google.common.truth.Truth.assertThat
-import data.utils.NetworkException
+import logic.utils.NetworkException
 import logic.model.LatLong
-import data.utils.TemperatureOutOfBoundException
-import data.utils.WeatherStateException
+import logic.utils.TemperatureOutOfBoundException
+import logic.utils.WeatherStateException
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -15,28 +15,28 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class GetWeatherUserCaseTest {
+class GetCurrentWeatherUseCaseTest {
 
-    lateinit var weatherRepository: WeatherRepository
-    lateinit var getWeatherUserCase: GetWeatherUserCase
-    lateinit var validator : WeatherValidator
+    private lateinit var weatherRepository: WeatherRepository
+    private lateinit var getCurrentWeatherUseCase: GetCurrentWeatherUseCase
+    private lateinit var validator: WeatherValidator
 
     @BeforeEach
     fun setUp() {
         weatherRepository = mockk()
         validator = WeatherValidator()
-        getWeatherUserCase = GetWeatherUserCase(weatherRepository, validator)
+        getCurrentWeatherUseCase = GetCurrentWeatherUseCase(weatherRepository, validator)
     }
 
     @Test
     fun `should return current weather, when valid coordinates`() = runTest {
         // Given
-        val weather = CurrentWeather(temperature = 22.5, time = LocalTime(12,0), weatherCode = 3)
+        val weather = CurrentWeather(temperature = 22.5, time = LocalTime(12, 0), weatherCode = 3)
 
         coEvery { weatherRepository.getWeatherFromRemote(any()) } returns weather
 
         // When
-        val result = getWeatherUserCase.getWeather(LatLong(51.5, -0.1))
+        val result = getCurrentWeatherUseCase.getCurrentWeather(LatLong(51.5, -0.1))
 
         // Then
         assertThat(result).isEqualTo(weather)
@@ -49,34 +49,33 @@ class GetWeatherUserCaseTest {
 
         // When & Then
         assertThrows<NetworkException> {
-            getWeatherUserCase.getWeather(LatLong(99.0, 12.2))
+            getCurrentWeatherUseCase.getCurrentWeather(LatLong(99.0, 12.2))
         }
     }
 
     @Test
     fun `should throws TemperatureException, when temp is out of range`() = runTest {
         // Given
-        val weather = CurrentWeather(temperature = 999.5, time = LocalTime(12,0), weatherCode = 3)
+        val weather = CurrentWeather(temperature = 999.5, time = LocalTime(12, 0), weatherCode = 3)
 
         coEvery { weatherRepository.getWeatherFromRemote(any()) } returns weather
 
         // When & Then
         assertThrows<TemperatureOutOfBoundException> {
-            getWeatherUserCase.getWeather(LatLong(51.5, -0.1))
+            getCurrentWeatherUseCase.getCurrentWeather(LatLong(51.5, -0.1))
         }
-
     }
 
     @Test
     fun `should throws WeatherStateException, when weather code is out of range`() = runTest {
         // Given
-        val weather = CurrentWeather(temperature = 44.5, time = LocalTime(12,0), weatherCode = 1000)
+        val weather = CurrentWeather(temperature = 44.5, time = LocalTime(12, 0), weatherCode = 1000)
 
         coEvery { weatherRepository.getWeatherFromRemote(any()) } returns weather
 
         // When & Then
         assertThrows<WeatherStateException> {
-            getWeatherUserCase.getWeather(LatLong(51.5, -0.1))
+            getCurrentWeatherUseCase.getCurrentWeather(LatLong(51.5, -0.1))
         }
     }
 }

@@ -1,10 +1,10 @@
 package di
 
 import logic.usecase.GetCityLocationByNameUseCase
-import logic.usecase.GetWeatherUserCase
+import logic.usecase.GetCurrentWeatherUseCase
 import org.koin.dsl.module
 
 val useCasesModule = module {
     single { GetCityLocationByNameUseCase(get()) }
-    single { GetWeatherUserCase(get()) }
+    single { GetCurrentWeatherUseCase(get()) }
 }
