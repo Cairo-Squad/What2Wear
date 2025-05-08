@@ -16,7 +16,28 @@ class ChooseCityFeatureUI(
     private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
     private val clothingSuggestionUseCase: ClothingSuggestionUseCase,
 ) {
-    private val cities = listOf("Cairo", "Moscow", "London", "Rome", "Paris")
+    private val cities = listOf(
+        "Cairo",
+        "Moscow",
+        "London",
+        "Rome",
+        "Paris",
+        "Beirut",
+        "Seoul",
+        "Tokyo",
+        "Berlin",
+        "Baghdad",
+        "Beijing",
+        "Damascus",
+        "Qudus",
+        "Vienna",
+        "Amsterdam",
+        "Stockholm",
+        "Abu Dhabi",
+        "Madrid",
+        "Buenos Aires",
+        "Athens"
+    )
 
     fun execute() {
         showAvailableCities()
