@@ -7,4 +7,5 @@ object CliConstants {
     const val ENTER_VALID_CITY_NUMBER_MESSAGE = "Please enter a valid number >>> "
     const val LOADING_MESSAGE = "⌛ Loading...."
     const val UNEXPECTED_ERROR_MESSAGE = "Unexpected error happened! Please try again."
+    const val SUGGESTION_TITLE = "===== Today's Suggestion ====="
 }

@@ -1,15 +1,20 @@
 package ui.feature
 
 import kotlinx.coroutines.runBlocking
+import logic.usecase.ClothingSuggestionUseCase
 import logic.usecase.GetCityLocationByNameUseCase
+import logic.usecase.GetCurrentWeatherUseCase
 import ui.CliConstants
 import ui.ioHandlers.OutputHandler
 import ui.ioHandlers.UserInputHandler
+import ui.utils.getPrintableString
 
 class ChooseCityFeatureUI(
     private val outputHandler: OutputHandler,
     private val userInputHandler: UserInputHandler,
-    private val getCityLocationByNameUseCase: GetCityLocationByNameUseCase
+    private val getCityLocationByNameUseCase: GetCityLocationByNameUseCase,
+    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
+    private val clothingSuggestionUseCase: ClothingSuggestionUseCase,
 ) {
     private val cities = listOf("Cairo", "Moscow", "London", "Rome", "Paris")
 
@@ -20,9 +25,11 @@ class ChooseCityFeatureUI(
         runBlocking {
             try {
                 val cityLocation = getCityLocationByNameUseCase.getCityLocation(cities[selectedCityIndex])
-                // TODO: 3. Use the city location to get the current weather state.
-                // TODO: 4. Pass the weather state to the clothes suggester use case.
-                // TODO: 5. Show the suggestion.
+                val cityCurrentWeather = getCurrentWeatherUseCase.getCurrentWeather(cityLocation)
+                val suggestion = clothingSuggestionUseCase.suggestClothes(cityCurrentWeather)
+                outputHandler.printlnMessage()
+                outputHandler.printlnMessage(CliConstants.SUGGESTION_TITLE)
+                outputHandler.printlnMessage(suggestion.getPrintableString())
             } catch (exception: Exception) {
                 outputHandler.printlnMessage(CliConstants.UNEXPECTED_ERROR_MESSAGE)
             }
