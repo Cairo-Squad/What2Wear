@@ -4,12 +4,12 @@ import logic.model.CurrentWeather
 import logic.model.SuggestionClothes
 
 class ClothingSuggestionUseCase {
-    fun suggestClothes(currentWeather : CurrentWeather) : SuggestionClothes {
-        val hour = currentWeather.time.hour
+    fun suggestClothes(currentWeather: CurrentWeather): SuggestionClothes {
+        val hour = currentWeather.time?.hour ?: 0
         val timeOfDay =
             if (hour in WeatherConstants.MORNING_START_HOUR..WeatherConstants.MORNING_END_HOUR) "morning" else "night"
 
-        val temperature = currentWeather.temperature
+        val temperature = currentWeather.temperature ?: 0.0
 
         val suggestion = when {
             temperature < WeatherConstants.FREEZING_TEMP -> {
