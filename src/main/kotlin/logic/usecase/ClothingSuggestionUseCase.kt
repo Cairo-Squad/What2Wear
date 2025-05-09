@@ -11,8 +11,8 @@ class ClothingSuggestionUseCase(
     fun suggestClothes(currentWeather : CurrentWeather) : SuggestedClothes {
         val weatherTag = mutableListOf<String>()
 
-        val currentWeatherTimeOfDayTag = WeathersUtils.getTimeOfDay(currentWeather)
-        val temperatureTag= WeathersUtils.getWeatherTag(currentWeather)
+        val currentWeatherTimeOfDayTag = WeathersUtils.getTimeOfDayTag(currentWeather.time?.hour)
+        val temperatureTag= WeathersUtils.getTemperatureTag(currentWeather.temperature)
 
         weatherTag.add(currentWeatherTimeOfDayTag)
         weatherTag.add(temperatureTag)
@@ -20,9 +20,9 @@ class ClothingSuggestionUseCase(
         val suggestedClothes= weatherRepository.filterClothes(weatherTag)
 
         return SuggestedClothes(
-            hour = currentWeather.time.hour,
-            temperature = currentWeather.temperature,
-            timeOfDay = currentWeatherTimeOfDayTag,
+            currentWeatherTimeHour = currentWeather.time?.hour,
+            currentWeatherTemperature = currentWeather.temperature,
+            currentWeatherTimeOfDay = currentWeatherTimeOfDayTag,
             suggestionClothes = suggestedClothes
         )
     }

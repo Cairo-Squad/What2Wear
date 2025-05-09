@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkObject
 import kotlinx.datetime.LocalTime
-import logic.model.Clothes
 import logic.model.CurrentWeather
 import logic.model.SuggestedClothes
 import logic.repository.WeatherRepository
@@ -42,9 +40,9 @@ class ClothingSuggestionUseCaseTest {
         // Then
         assertThat(clothingSuggestion).isEqualTo(
             SuggestedClothes(
-                hour = 7,
-                temperature = 2.0,
-                timeOfDay = "morning",
+                currentWeatherTimeHour = 7,
+                currentWeatherTemperature = 2.0,
+                currentWeatherTimeOfDay = "morning",
                 suggestionClothes = listOf("Coat 🧥", "Hat 👒")
             )
         )
@@ -66,9 +64,9 @@ class ClothingSuggestionUseCaseTest {
         // Then
         assertThat(suggestionClothes).isEqualTo(
             SuggestedClothes(
-                hour = 22,
-                temperature = -3.0,
-                timeOfDay = "night",
+                currentWeatherTimeHour = 22,
+                currentWeatherTemperature = -3.0,
+                currentWeatherTimeOfDay = "night",
                 suggestionClothes = listOf("Coat 🧥", "Scarf 🧣", "Gloves 🧤")
             )
         )
@@ -92,9 +90,9 @@ class ClothingSuggestionUseCaseTest {
         // Then
         assertThat(clothingSuggestion).isEqualTo(
             SuggestedClothes(
-                hour = 8,
-                temperature = 10.0,
-                timeOfDay = "morning",
+                currentWeatherTimeHour = 8,
+                currentWeatherTemperature = 10.0,
+                currentWeatherTimeOfDay = "morning",
                 suggestionClothes = listOf("Hat 👒", "Jacket 🧥", "Hoodie 👚", "Boots 👢")
             )
         )
@@ -116,9 +114,9 @@ class ClothingSuggestionUseCaseTest {
         // Then
         assertThat(clothingSuggestion).isEqualTo(
             SuggestedClothes(
-                hour = 20,
-                temperature = 12.0,
-                timeOfDay = "night",
+                currentWeatherTimeHour = 20,
+                currentWeatherTemperature = 12.0,
+                currentWeatherTimeOfDay = "night",
                 suggestionClothes = listOf("Scarf 🧣", "Hoodie 👚")
             )
         )
@@ -142,9 +140,9 @@ class ClothingSuggestionUseCaseTest {
         // Then
         assertThat(clothingSuggestion).isEqualTo(
             SuggestedClothes(
-                hour = 10,
-                temperature = 20.0,
-                timeOfDay = "morning",
+                currentWeatherTimeHour = 10,
+                currentWeatherTemperature = 20.0,
+                currentWeatherTimeOfDay = "morning",
                 suggestionClothes = listOf("Hoodie 👚", "Top 👚", "T-Shirt 👕", "Shorts 🩳")
             )
         )
@@ -166,9 +164,9 @@ class ClothingSuggestionUseCaseTest {
         // Then
         assertThat(clothingSuggestion).isEqualTo(
             SuggestedClothes(
-                hour = 23,
-                temperature = 28.0,
-                timeOfDay = "night",
+                currentWeatherTimeHour = 23,
+                currentWeatherTemperature = 28.0,
+                currentWeatherTimeOfDay = "night",
                 suggestionClothes = listOf("Light Dress 👗", "T-Shirt 👕")
             )
         )

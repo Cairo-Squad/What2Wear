@@ -15,4 +15,6 @@ object WeatherConstants {
     const val COLD_TAG = "cold_temp"
     const val WARM_TAG = "warm_temp"
     const val HOT_TAG = "hot_temp"
+    const val UNKNOWN_TEMP_TAG : String =""
+
 }

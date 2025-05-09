@@ -1,8 +1,8 @@
 package logic.model
 
 data class SuggestedClothes(
-    val hour : Int? = null,
-    val temperature : Double? = null,
-    val timeOfDay : String? = null,
+    val currentWeatherTimeHour : Int? = null,
+    val currentWeatherTemperature :Double? = null,
+    val currentWeatherTimeOfDay :String? = null,
     val suggestionClothes : List<String>? = null
 )

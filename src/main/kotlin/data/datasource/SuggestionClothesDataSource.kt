@@ -21,11 +21,10 @@ class SuggestionClothesDataSource {
         Clothes(name = "Shorts 🩳", tags = listOf(WeatherConstants.HOT_TAG, WeatherConstants.WARM_TAG, WeatherConstants.MORNING))
     )
     fun filterClothes(weatherTag : List<String>) : List<String>? {
-        val matchedClothes = clothesSuggestion
+        return clothesSuggestion
             .filter { clothes -> weatherTag.all { tag -> clothes.tags.contains(tag.lowercase()) } }
             .map { it.name }
-
-        return matchedClothes.takeIf { it.isNotEmpty() }
-            ?: throw NoClothesFoundException()
+            .takeIf { it.isNotEmpty()
+            }
     }
 }
