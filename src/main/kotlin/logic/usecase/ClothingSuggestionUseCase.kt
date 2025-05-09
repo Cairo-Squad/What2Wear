@@ -2,6 +2,7 @@ package logic.usecase
 
 import logic.model.CurrentWeather
 import logic.model.SuggestionClothes
+import logic.uitls.DataSource
 
 class ClothingSuggestionUseCase {
     fun suggestClothes(currentWeather : CurrentWeather) : SuggestionClothes {
@@ -10,43 +11,19 @@ class ClothingSuggestionUseCase {
             if (hour in WeatherConstants.MORNING_START_HOUR..WeatherConstants.MORNING_END_HOUR) "morning" else "night"
 
         val temperature = currentWeather.temperature
-
         val suggestion = when {
-            temperature < WeatherConstants.FREEZING_TEMP -> {
-                if (timeOfDay == "morning") {
-                    listOf("Coat 🧥", "Hat 👒")
-                } else {
-                    listOf("Coat 🧥", "Scarf 🧣", "Gloves 🧤", "Hat 👒")
-                }
-            }
+            temperature < WeatherConstants.FREEZING_TEMP ->
+                filterClothes(listOf("FREEZING_TEMP", timeOfDay))
 
-            temperature < WeatherConstants.COLD_TEMP -> {
-                if (timeOfDay == "morning") {
-                    listOf("Jacket 🧥", "Hoodie 👚", "Boots 👢")
+            temperature < WeatherConstants.COLD_TEMP ->
+                filterClothes(listOf("COLD_TEMP", timeOfDay))
 
-                } else {
-                    listOf("Hoodie 👚", "Scarf 🧣")
-                }
-            }
+            temperature < WeatherConstants.WARM_TEMP ->
+                filterClothes(listOf("WARM_TEMP", timeOfDay))
 
-            temperature < WeatherConstants.WARM_TEMP -> {
-                if (timeOfDay == "morning") {
-                    listOf("Top 👚", "Trousers 👖")
-
-                } else {
-                    listOf("Hoodie 👚", "Trousers 👖")
-                }
-            }
-
-            else -> {
-                if (timeOfDay == "morning") {
-                    listOf("Dress 👗")
-
-                } else {
-                    listOf("Light Dress 👗")
-                }
-            }
+            else -> filterClothes(listOf("HOT_TEMP", timeOfDay))
         }
+
         return SuggestionClothes(
             hour = hour,
             temperature = temperature,
@@ -54,4 +31,11 @@ class ClothingSuggestionUseCase {
             suggestionClothes = suggestion
         )
     }
+
+    private fun filterClothes(tag : List<String>) : List<String> {
+        return DataSource.clothesSuggestion
+            .filter { clothes -> tag.all { tag -> clothes.tags.contains(tag.lowercase()) } }
+            .map { it.nameOfClothes }
+    }
+
 }

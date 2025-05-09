@@ -43,7 +43,7 @@ class ClothingSuggestionUseCaseTest {
                 hour = 22,
                 temperature = -3.0,
                 timeOfDay = "night",
-                suggestionClothes = listOf("Coat 🧥", "Scarf 🧣", "Gloves 🧤", "Hat 👒")
+                suggestionClothes = listOf("Coat 🧥", "Scarf 🧣", "Gloves 🧤")
             )
         )    }
 
@@ -62,7 +62,7 @@ class ClothingSuggestionUseCaseTest {
                 hour = 8,
                 temperature = 10.0,
                 timeOfDay = "morning",
-                suggestionClothes = listOf("Jacket 🧥", "Hoodie 👚", "Boots 👢")
+                suggestionClothes = listOf("Hat 👒","Jacket 🧥", "Hoodie 👚", "Boots 👢")
             )
         )    }
 
@@ -81,7 +81,7 @@ class ClothingSuggestionUseCaseTest {
                 hour = 20,
                 temperature = 12.0,
                 timeOfDay = "night",
-                suggestionClothes = listOf("Hoodie 👚", "Scarf 🧣")
+                suggestionClothes = listOf("Scarf 🧣", "Hoodie 👚")
             )
         )    }
 
@@ -100,7 +100,7 @@ class ClothingSuggestionUseCaseTest {
                 hour = 10,
                 temperature = 20.0,
                 timeOfDay = "morning",
-                suggestionClothes = listOf("Top 👚", "Trousers 👖")
+                suggestionClothes = listOf("Hoodie 👚", "Top 👚", "T-Shirt 👕", "Shorts 🩳")
             )
         )
     }
@@ -120,7 +120,7 @@ class ClothingSuggestionUseCaseTest {
                 hour = 23,
                 temperature = 28.0,
                 timeOfDay = "night",
-                suggestionClothes = listOf("Light Dress 👗")
+                suggestionClothes = listOf("Light Dress 👗", "T-Shirt 👕")
             )
         )
     }
