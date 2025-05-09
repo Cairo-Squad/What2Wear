@@ -17,14 +17,13 @@ class RemoteDataSourceImpl(
 ) : RemoteDataSource {
 
     override suspend fun getCityLocationByName(cityName: String): CityLocationDto {
-        // TODO: Should the parameters be constants? Or is it fine here to use them like this?
         val response = ktorClient.get {
             url {
                 protocol = URLProtocol.HTTPS
                 host = ApiConstants.GEOCODING_BASE_URL
                 path(ApiConstants.SEARCH_CITY_LOCATION_ENDPOINT)
                 parameter("name", cityName)
-                parameter("count", "1")
+                parameter("count", ApiConstants.CITY_LOCATION_COUNT)
             }
         }
         return Json.decodeFromString<CityLocationDto>(response.bodyAsText())
@@ -38,7 +37,7 @@ class RemoteDataSourceImpl(
                 path(ApiConstants.GET_LOCATION_WEATHER_ENDPOINT)
                 parameter("latitude", cityLocation.latitude)
                 parameter("longitude", cityLocation.longitude)
-                parameter("current_weather", "true")
+                parameter("current_weather", ApiConstants.CURRENT_WEATHER_FLAG)
             }
         }
         return Json.decodeFromString<CityWeatherDto>(response.bodyAsText())
