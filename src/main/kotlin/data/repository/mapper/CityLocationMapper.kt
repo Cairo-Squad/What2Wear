@@ -1,12 +1,12 @@
 package data.repository.mapper
 
-import data.dto.CityLocationResponse
+import data.dto.CityLocationDto
 import logic.model.CityLocation
 
-fun CityLocationResponse.toCityLocation(): CityLocation {
-    val firstCityLocation = this.results.first()
+fun CityLocationDto.toCityLocation(): CityLocation {
+    val firstCityLocation = this.cityLocationDtoList?.firstOrNull()
     return CityLocation(
-        latitude = firstCityLocation.latitude!!,
-        longitude = firstCityLocation.longitude!!
+        latitude = firstCityLocation?.latitude,
+        longitude = firstCityLocation?.longitude
     )
 }
