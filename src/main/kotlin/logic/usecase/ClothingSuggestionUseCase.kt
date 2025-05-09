@@ -2,27 +2,29 @@ package logic.usecase
 
 import logic.model.CurrentWeather
 import logic.model.SuggestionClothes
-import logic.uitls.DataSource
+import logic.repository.ClothingSuggestionRepository
 
-class ClothingSuggestionUseCase {
+class ClothingSuggestionUseCase(
+    private val clothingSuggestionRepository : ClothingSuggestionRepository
+) {
     fun suggestClothes(currentWeather : CurrentWeather) : SuggestionClothes {
         val hour = currentWeather.time.hour
         val timeOfDay =
-            if (hour in WeatherConstants.MORNING_START_HOUR..WeatherConstants.MORNING_END_HOUR) "morning" else "night"
+            if (hour in WeatherConstants.MORNING_START_HOUR..WeatherConstants.MORNING_END_HOUR) {
+                WeatherConstants.MORNING
+            } else {
+                WeatherConstants.NIGHT
+            }
 
         val temperature = currentWeather.temperature
-        val suggestion = when {
-            temperature < WeatherConstants.FREEZING_TEMP ->
-                filterClothes(listOf("FREEZING_TEMP", timeOfDay))
-
-            temperature < WeatherConstants.COLD_TEMP ->
-                filterClothes(listOf("COLD_TEMP", timeOfDay))
-
-            temperature < WeatherConstants.WARM_TEMP ->
-                filterClothes(listOf("WARM_TEMP", timeOfDay))
-
-            else -> filterClothes(listOf("HOT_TEMP", timeOfDay))
+        val weatherTag = when {
+            temperature < WeatherConstants.FREEZING_TEMP -> WeatherConstants.FREEZING_TAG
+            temperature < WeatherConstants.COLD_TEMP -> WeatherConstants.COLD_TAG
+            temperature < WeatherConstants.WARM_TEMP -> WeatherConstants.WARM_TAG
+            else -> WeatherConstants.HOT_TAG
         }
+
+        val suggestion = filterClothes(listOf(weatherTag, timeOfDay))
 
         return SuggestionClothes(
             hour = hour,
@@ -33,9 +35,9 @@ class ClothingSuggestionUseCase {
     }
 
     private fun filterClothes(tag : List<String>) : List<String> {
-        return DataSource.clothesSuggestion
+        return clothingSuggestionRepository.getAllClothes()
             .filter { clothes -> tag.all { tag -> clothes.tags.contains(tag.lowercase()) } }
-            .map { it.nameOfClothes }
+            .map { it.name }
     }
 
 }
