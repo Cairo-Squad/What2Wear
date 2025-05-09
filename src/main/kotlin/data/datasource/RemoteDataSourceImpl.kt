@@ -2,7 +2,7 @@ package data.datasource
 
 import data.datasource.ApiConstants.WEATHER_BASE_URL
 import data.dto.CityLocationDto
-import data.dto.CurrentWeatherResponse
+import data.dto.CityWeatherDto
 import data.repository.RemoteDataSource
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -30,7 +30,7 @@ class RemoteDataSourceImpl(
         return Json.decodeFromString<CityLocationDto>(response.bodyAsText())
     }
 
-    override suspend fun getWeatherByLocation(cityLocation: CityLocation): CurrentWeatherResponse {
+    override suspend fun getWeatherByLocation(cityLocation: CityLocation): CityWeatherDto {
         val response = ktorClient.get {
             url {
                 protocol = URLProtocol.HTTPS
@@ -41,6 +41,6 @@ class RemoteDataSourceImpl(
                 parameter("current_weather", "true")
             }
         }
-        return Json.decodeFromString<CurrentWeatherResponse>(response.bodyAsText())
+        return Json.decodeFromString<CityWeatherDto>(response.bodyAsText())
     }
 }
