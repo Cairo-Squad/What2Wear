@@ -6,18 +6,20 @@ import logic.repository.WeatherRepository
 import data.repository.mapper.toCityLocation
 import data.repository.mapper.toCurrentWeather
 import logic.utils.NetworkException
+import logic.utils.wrapCallWithTry
 
 class WeatherRepositoryImpl(
     private val remoteDataSource: RemoteDataSource
 ) : WeatherRepository {
 
     override suspend fun getCityLocationByName(cityName: String): CityLocation {
-        return remoteDataSource.getCityLocationByName(cityName).toCityLocation()
+        return wrapCallWithTry { remoteDataSource.getCityLocationByName(cityName).toCityLocation() }
     }
 
     override suspend fun getWeatherFromRemote(cityLocation: CityLocation): CurrentWeather {
-        return remoteDataSource.getWeatherByLocation(cityLocation).currentWeather?.toCurrentWeather()
-            ?: throw NetworkException()
-
+        return wrapCallWithTry {
+            remoteDataSource.getWeatherByLocation(cityLocation).currentWeather?.toCurrentWeather()
+                ?: throw NetworkException()
+        }
     }
 }

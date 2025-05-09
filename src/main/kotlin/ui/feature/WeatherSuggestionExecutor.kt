@@ -4,6 +4,7 @@ import kotlinx.coroutines.runBlocking
 import logic.usecase.ClothingSuggestionUseCase
 import logic.usecase.GetCityLocationByNameUseCase
 import logic.usecase.GetCurrentWeatherUseCase
+import logic.utils.*
 import ui.CliConstants
 import ui.ioHandlers.OutputHandler
 import ui.utils.getPrintableString
@@ -24,8 +25,12 @@ class WeatherSuggestionExecutor(
                 outputHandler.printlnMessage()
                 outputHandler.printlnMessage(CliConstants.SUGGESTION_TITLE)
                 outputHandler.printlnMessage(suggestion.getPrintableString())
-            } catch (exception: Exception) {
-                outputHandler.printlnMessage(CliConstants.UNEXPECTED_ERROR_MESSAGE)
+            } catch (exception: NetworkException) {
+                outputHandler.printlnMessage(exception.message)
+            } catch (exception: FetchingWeatherException) {
+                outputHandler.printlnMessage(exception.message)
+            } catch (exception: UnexpectedErrorException) {
+                outputHandler.printlnMessage(exception.message)
             }
         }
     }
