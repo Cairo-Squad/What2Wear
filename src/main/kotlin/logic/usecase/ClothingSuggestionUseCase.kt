@@ -1,43 +1,29 @@
 package logic.usecase
 
 import logic.model.CurrentWeather
-import logic.model.SuggestionClothes
-import logic.repository.ClothingSuggestionRepository
+import logic.model.SuggestedClothes
+import logic.repository.WeatherRepository
+import logic.utils.WeathersUtils
 
 class ClothingSuggestionUseCase(
-    private val clothingSuggestionRepository : ClothingSuggestionRepository
+    private val weatherRepository : WeatherRepository
 ) {
-    fun suggestClothes(currentWeather : CurrentWeather) : SuggestionClothes {
-        val hour = currentWeather.time.hour
-        val timeOfDay =
-            if (hour in WeatherConstants.MORNING_START_HOUR..WeatherConstants.MORNING_END_HOUR) {
-                WeatherConstants.MORNING
-            } else {
-                WeatherConstants.NIGHT
-            }
+    fun suggestClothes(currentWeather : CurrentWeather) : SuggestedClothes {
+        val weatherTag = mutableListOf<String>()
 
-        val temperature = currentWeather.temperature
-        val weatherTag = when {
-            temperature < WeatherConstants.FREEZING_TEMP -> WeatherConstants.FREEZING_TAG
-            temperature < WeatherConstants.COLD_TEMP -> WeatherConstants.COLD_TAG
-            temperature < WeatherConstants.WARM_TEMP -> WeatherConstants.WARM_TAG
-            else -> WeatherConstants.HOT_TAG
-        }
+        val currentWeatherTimeOfDayTag = WeathersUtils.getTimeOfDay(currentWeather)
+        val temperatureTag= WeathersUtils.getWeatherTag(currentWeather)
 
-        val suggestion = filterClothes(listOf(weatherTag, timeOfDay))
+        weatherTag.add(currentWeatherTimeOfDayTag)
+        weatherTag.add(temperatureTag)
 
-        return SuggestionClothes(
-            hour = hour,
-            temperature = temperature,
-            timeOfDay = timeOfDay,
-            suggestionClothes = suggestion
+        val suggestedClothes= weatherRepository.filterClothes(weatherTag)
+
+        return SuggestedClothes(
+            hour = currentWeather.time.hour,
+            temperature = currentWeather.temperature,
+            timeOfDay = currentWeatherTimeOfDayTag,
+            suggestionClothes = suggestedClothes
         )
     }
-
-    private fun filterClothes(tag : List<String>) : List<String> {
-        return clothingSuggestionRepository.getAllClothes()
-            .filter { clothes -> tag.all { tag -> clothes.tags.contains(tag.lowercase()) } }
-            .map { it.name }
-    }
-
 }
