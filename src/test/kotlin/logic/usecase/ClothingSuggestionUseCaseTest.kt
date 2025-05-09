@@ -13,14 +13,15 @@ import java.time.LocalTime
 
 class ClothingSuggestionUseCaseTest {
 
-    private lateinit var clothingSuggestionRepository: ClothingSuggestionRepository
-    private lateinit var clothingSuggestion: ClothingSuggestionUseCase
+    private lateinit var clothingSuggestionRepository : ClothingSuggestionRepository
+    private lateinit var clothingSuggestion : ClothingSuggestionUseCase
 
     @BeforeEach
     fun setup() {
         clothingSuggestionRepository = mockk(relaxed = true)
         clothingSuggestion = ClothingSuggestionUseCase(clothingSuggestionRepository)
     }
+
     @Test
     fun `should suggestt clothes for cold morning when temperature is cold`() {
         // Given
@@ -37,7 +38,9 @@ class ClothingSuggestionUseCaseTest {
                 timeOfDay = "morning",
                 suggestionClothes = listOf("Coat 🧥", "Hat 👒")
             )
-        )    }
+        )
+    }
+
     @Test
     fun `should suggest clothes for freezing night when temperature is Freezing `() {
         // Given
@@ -55,7 +58,8 @@ class ClothingSuggestionUseCaseTest {
                 timeOfDay = "night",
                 suggestionClothes = listOf("Coat 🧥", "Scarf 🧣", "Gloves 🧤")
             )
-        )    }
+        )
+    }
 
     @Test
     fun `should suggest clothes for cool morning when temperature is  cool`() {
@@ -73,9 +77,10 @@ class ClothingSuggestionUseCaseTest {
                 hour = 8,
                 temperature = 10.0,
                 timeOfDay = "morning",
-                suggestionClothes = listOf("Hat 👒","Jacket 🧥", "Hoodie 👚", "Boots 👢")
+                suggestionClothes = listOf("Hat 👒", "Jacket 🧥", "Hoodie 👚", "Boots 👢")
             )
-        )    }
+        )
+    }
 
     @Test
     fun `should suggest clothes for cold night when temperature is cool`() {
@@ -93,9 +98,10 @@ class ClothingSuggestionUseCaseTest {
                 hour = 20,
                 temperature = 12.0,
                 timeOfDay = "night",
-                suggestionClothes = listOf("Scarf 🧣", "Hoodie 👚")
+                suggestionClothes = listOf("Hoodie 👚", "Scarf 🧣")
             )
-        )    }
+        )
+    }
 
     @Test
     fun `should suggest clothes for nice morning when temperature is sunny`() {
@@ -138,6 +144,7 @@ class ClothingSuggestionUseCaseTest {
             )
         )
     }
+
     val mockClothes = listOf(
         Clothes(name = "Coat 🧥", tags = listOf("freezing_temp", "morning", "night")),
         Clothes(name = "Scarf 🧣", tags = listOf("freezing_temp", "cold_temp", "night")),
