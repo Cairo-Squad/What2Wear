@@ -7,6 +7,7 @@ import data.repository.RemoteDataSource
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import logic.model.CityLocation
@@ -16,18 +17,30 @@ class RemoteDataSourceImpl(
 ) : RemoteDataSource {
 
     override suspend fun getCityLocationByName(cityName: String): CityLocationDto {
-        val response = ktorClient.get("${ApiConstants.GEOCODING_BASE_URL}/search?name=$cityName&count=1")
+        // TODO: Should the parameters be constants? Or is it fine here to use them like this?
+        val response = ktorClient.get {
+            url {
+                protocol = URLProtocol.HTTPS
+                host = ApiConstants.GEOCODING_BASE_URL
+                path(ApiConstants.SEARCH_CITY_LOCATION_ENDPOINT)
+                parameter("name", cityName)
+                parameter("count", "1")
+            }
+        }
         return Json.decodeFromString<CityLocationDto>(response.bodyAsText())
     }
 
     override suspend fun getWeatherByLocation(cityLocation: CityLocation): CurrentWeatherResponse {
-        val response =
-            ktorClient.get {
-                url(WEATHER_BASE_URL)
+        val response = ktorClient.get {
+            url {
+                protocol = URLProtocol.HTTPS
+                host = WEATHER_BASE_URL
+                path(ApiConstants.GET_LOCATION_WEATHER_ENDPOINT)
                 parameter("latitude", cityLocation.latitude)
                 parameter("longitude", cityLocation.longitude)
                 parameter("current_weather", "true")
             }
+        }
         return Json.decodeFromString<CurrentWeatherResponse>(response.bodyAsText())
     }
 }
