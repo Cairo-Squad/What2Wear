@@ -1,0 +1,57 @@
+name: Kover Test Coverage
+
+on:
+  pull_request:
+  push:
+    branches: [ master, develop, base-structure ]
+
+jobs:
+  coverage-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Give gradlew permission to execute
+        run: chmod +x ./gradlew
+
+      - name: Run tests with Kover
+        run: ./gradlew koverXmlReport koverHtmlReport koverVerify
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: build/reports/kover/report.xml
+
+      - name: Extract coverage percentage
+        id: coverage
+        run: |
+          COVERED=$(grep -oPm1 '(?<=<counter type="LINE" covered=")\d+' build/reports/kover/report.xml)
+          MISSED=$(grep -oPm1 '(?<=<counter type="LINE" missed=")\d+' build/reports/kover/report.xml)
+          TOTAL=$((COVERED + MISSED))
+          if [ "$TOTAL" -eq 0 ]; then
+            PERCENTAGE=0
+          else
+            PERCENTAGE=$((COVERED * 100 / TOTAL))
+          fi
+          echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
+
+      - name: Comment on PR with coverage
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: coverage-report
+          message: |
+            ✅ **Kover Test Coverage**
+            - Coverage: ${{ steps.coverage.outputs.percentage }}%
+            - Minimum required: 100%
+            - Only logic package is checked.
