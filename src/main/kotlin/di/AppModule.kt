@@ -17,6 +17,8 @@ val appModule = module {
 
     single<UserInputHandler> { ConsoleUserInputHandler() }
     single<OutputHandler> { ConsoleOutputHandler() }
+    single { WeatherSuggestionExecutor(get(), get(), get(), get()) }
     single { ChooseCityFeatureUI(get(), get(), get()) }
-    single { ClothsApp(get(), get()) }
+    single { EnterCityFeatureUI(get(), get(), get()) }
+    single { ClothsApp(get(), get(), get(), get()) }
 }

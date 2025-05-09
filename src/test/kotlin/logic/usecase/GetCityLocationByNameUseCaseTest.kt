@@ -60,7 +60,6 @@ class GetCityLocationByNameUseCaseTest {
 
     private fun getValidCityLocation(): CityLocation {
         return CityLocation(
-            name = "Cairo",
             latitude = 0.0,
             longitude = 0.0
         )
