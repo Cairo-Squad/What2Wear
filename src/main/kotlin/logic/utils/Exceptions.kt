@@ -1,8 +1,8 @@
 package logic.utils
 
 open class WeatherException(message: String) : Exception(message)
-class TemperatureOutOfBoundException : WeatherException("Temperature should be between -90 to 60")
-class WeatherStateException : WeatherException("There is no Weather State")
-class TemperatureNotFoundException : WeatherException("There is no Temperature")
-class NetworkException : Exception("Network unavailable")
+class WeatherStateException : WeatherException("There is no Weather State") // TODO: This one!!
+class NetworkException : WeatherException("Network unavailable! Please check your network.")
+class FetchingWeatherException : WeatherException("Can't fetch this city's weather! Please try again.")
+class UnexpectedErrorException : WeatherException("Unexpected error happened! Please try again.")
 class NoClothesFoundException : Exception("No matching clothes found.")
