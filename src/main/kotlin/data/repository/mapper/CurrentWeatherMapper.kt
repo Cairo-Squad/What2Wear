@@ -6,6 +6,7 @@ import logic.utils.WeatherStateException
 import kotlinx.datetime.LocalDateTime
 import logic.model.CurrentWeather
 
+// TODO: Refactor the nullability logic!!
 fun CurrentWeatherDTO.toCurrentWeather(): CurrentWeather {
     val parsedTime = LocalDateTime.parse(
         time ?: throw IllegalArgumentException("Missing timestamp")

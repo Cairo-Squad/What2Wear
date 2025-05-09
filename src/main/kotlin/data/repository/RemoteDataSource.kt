@@ -2,9 +2,9 @@ package data.repository
 
 import data.dto.CurrentWeatherResponse
 import logic.model.CityLocation
-import data.dto.CityLocationResponse
+import data.dto.CityLocationDto
 
 interface RemoteDataSource {
     suspend fun getWeatherByLocation(cityLocation: CityLocation): CurrentWeatherResponse
-    suspend fun getCityLocationByName(cityName: String): CityLocationResponse
+    suspend fun getCityLocationByName(cityName: String): CityLocationDto
 }

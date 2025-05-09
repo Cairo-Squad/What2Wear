@@ -1,7 +1,7 @@
 package data.datasource
 
 import data.datasource.ApiConstants.WEATHER_BASE_URL
-import data.dto.CityLocationResponse
+import data.dto.CityLocationDto
 import data.dto.CurrentWeatherResponse
 import data.repository.RemoteDataSource
 import io.ktor.client.*
@@ -15,9 +15,9 @@ class RemoteDataSourceImpl(
     private val ktorClient: HttpClient
 ) : RemoteDataSource {
 
-    override suspend fun getCityLocationByName(cityName: String): CityLocationResponse {
+    override suspend fun getCityLocationByName(cityName: String): CityLocationDto {
         val response = ktorClient.get("${ApiConstants.GEOCODING_BASE_URL}/search?name=$cityName&count=1")
-        return Json.decodeFromString<CityLocationResponse>(response.bodyAsText())
+        return Json.decodeFromString<CityLocationDto>(response.bodyAsText())
     }
 
     override suspend fun getWeatherByLocation(cityLocation: CityLocation): CurrentWeatherResponse {
