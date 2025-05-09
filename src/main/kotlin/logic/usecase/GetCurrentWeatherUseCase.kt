@@ -5,12 +5,9 @@ import logic.model.CurrentWeather
 import logic.repository.WeatherRepository
 
 class GetCurrentWeatherUseCase(
-    private val repository: WeatherRepository,
-    private val validator: WeatherValidator = WeatherValidator()
+    private val repository: WeatherRepository
 ) {
     suspend fun getCurrentWeather(cityLocation: CityLocation): CurrentWeather {
-        val currentWeather = repository.getWeatherFromRemote(cityLocation)
-        validator.validate(currentWeather)
-        return currentWeather
+        return repository.getWeatherFromRemote(cityLocation)
     }
 }
