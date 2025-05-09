@@ -5,3 +5,4 @@ class TemperatureOutOfBoundException : WeatherException("Temperature should be b
 class WeatherStateException : WeatherException("There is no Weather State")
 class TemperatureNotFoundException : WeatherException("There is no Temperature")
 class NetworkException : Exception("Network unavailable")
+class NoClothesFoundException : Exception("No matching clothes found.")
