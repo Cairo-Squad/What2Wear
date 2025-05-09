@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.datetime.LocalTime
 import logic.model.Clothes
 import logic.model.CurrentWeather
 import logic.model.SuggestionClothes
 import logic.repository.ClothingSuggestionRepository
 import org.junit.jupiter.api.BeforeEach
-import java.time.LocalTime
 
 class ClothingSuggestionUseCaseTest {
 
@@ -25,7 +25,7 @@ class ClothingSuggestionUseCaseTest {
     @Test
     fun `should suggestt clothes for cold morning when temperature is cold`() {
         // Given
-        val currentWeather = CurrentWeather(temperature = 2.0, time = LocalTime.of(7, 0), weatherCode = 1)
+        val currentWeather = CurrentWeather(temperature = 2.0, time = LocalTime(7, 0), weatherCode = 1)
         every { clothingSuggestionRepository.getAllClothes() } returns mockClothes
 
         // When
@@ -44,7 +44,7 @@ class ClothingSuggestionUseCaseTest {
     @Test
     fun `should suggest clothes for freezing night when temperature is Freezing `() {
         // Given
-        val currentWeather = CurrentWeather(temperature = -3.0, time = LocalTime.of(22, 0), weatherCode = 2)
+        val currentWeather = CurrentWeather(temperature = -3.0, time = LocalTime(22, 0), weatherCode = 2)
         every { clothingSuggestionRepository.getAllClothes() } returns mockClothes
 
         // When
@@ -64,7 +64,7 @@ class ClothingSuggestionUseCaseTest {
     @Test
     fun `should suggest clothes for cool morning when temperature is  cool`() {
         // Given
-        val currentWeather = CurrentWeather(temperature = 10.0, time = LocalTime.of(8, 0), weatherCode = 3)
+        val currentWeather = CurrentWeather(temperature = 10.0, time = LocalTime(8, 0), weatherCode = 3)
         every { clothingSuggestionRepository.getAllClothes() } returns mockClothes
 
 
@@ -85,7 +85,7 @@ class ClothingSuggestionUseCaseTest {
     @Test
     fun `should suggest clothes for cold night when temperature is cool`() {
         // Given
-        val currentWeather = CurrentWeather(temperature = 12.0, time = LocalTime.of(20, 0), weatherCode = 4)
+        val currentWeather = CurrentWeather(temperature = 12.0, time = LocalTime(20, 0), weatherCode = 4)
         every { clothingSuggestionRepository.getAllClothes() } returns mockClothes
 
 
@@ -98,7 +98,7 @@ class ClothingSuggestionUseCaseTest {
                 hour = 20,
                 temperature = 12.0,
                 timeOfDay = "night",
-                suggestionClothes = listOf("Hoodie 👚", "Scarf 🧣")
+                suggestionClothes = listOf("Scarf 🧣", "Hoodie 👚")
             )
         )
     }
@@ -106,7 +106,7 @@ class ClothingSuggestionUseCaseTest {
     @Test
     fun `should suggest clothes for nice morning when temperature is sunny`() {
         // Given
-        val currentWeather = CurrentWeather(temperature = 20.0, time = LocalTime.of(10, 0), weatherCode = 5)
+        val currentWeather = CurrentWeather(temperature = 20.0, time = LocalTime(10, 0), weatherCode = 5)
         every { clothingSuggestionRepository.getAllClothes() } returns mockClothes
 
 
@@ -127,7 +127,7 @@ class ClothingSuggestionUseCaseTest {
     @Test
     fun `should suggest clothes for warm night when temperature is hot  `() {
         // Given
-        val currentWeather = CurrentWeather(temperature = 28.0, time = LocalTime.of(23, 0), weatherCode = 6)
+        val currentWeather = CurrentWeather(temperature = 28.0, time = LocalTime(23, 0), weatherCode = 6)
         every { clothingSuggestionRepository.getAllClothes() } returns mockClothes
 
 
