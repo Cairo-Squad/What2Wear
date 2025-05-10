@@ -5,3 +5,4 @@ class WeatherStateException : WeatherException("There is no Weather State") // T
 class NetworkException : WeatherException("Network unavailable! Please check your network.")
 class FetchingWeatherException : WeatherException("Can't fetch this city's weather! Please try again.")
 class UnexpectedErrorException : WeatherException("Unexpected error happened! Please try again.")
+class NoClothesFoundException : Exception("No matching clothes found.")

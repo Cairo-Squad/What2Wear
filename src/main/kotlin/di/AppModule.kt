@@ -13,7 +13,7 @@ import ui.ioHandlers.*
 val appModule = module {
     single { HttpClient(CIO) }
     single<RemoteDataSource> { RemoteDataSourceImpl(get()) }
-    single<WeatherRepository> { WeatherRepositoryImpl(get()) }
+    single<WeatherRepository> { WeatherRepositoryImpl(get(),get()) }
 
     single<UserInputHandler> { ConsoleUserInputHandler() }
     single<OutputHandler> { ConsoleOutputHandler() }

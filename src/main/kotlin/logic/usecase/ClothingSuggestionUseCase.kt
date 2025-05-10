@@ -1,57 +1,29 @@
 package logic.usecase
 
 import logic.model.CurrentWeather
-import logic.model.SuggestionClothes
+import logic.model.SuggestedClothes
+import logic.repository.WeatherRepository
+import logic.utils.WeathersUtils
 
-class ClothingSuggestionUseCase {
-    fun suggestClothes(currentWeather: CurrentWeather): SuggestionClothes {
-        val hour = currentWeather.time?.hour ?: 0
-        val timeOfDay =
-            if (hour in WeatherConstants.MORNING_START_HOUR..WeatherConstants.MORNING_END_HOUR) "morning" else "night"
+class ClothingSuggestionUseCase(
+    private val weatherRepository : WeatherRepository
+) {
+    fun suggestClothes(currentWeather : CurrentWeather) : SuggestedClothes {
+        val weatherTag = mutableListOf<String>()
 
-        val temperature = currentWeather.temperature ?: 0.0
+        val currentWeatherTimeOfDayTag = WeathersUtils.getTimeOfDayTag(currentWeather.time?.hour)
+        val temperatureTag= WeathersUtils.getTemperatureTag(currentWeather.temperature)
 
-        val suggestion = when {
-            temperature < WeatherConstants.FREEZING_TEMP -> {
-                if (timeOfDay == "morning") {
-                    listOf("Coat 🧥", "Hat 👒")
-                } else {
-                    listOf("Coat 🧥", "Scarf 🧣", "Gloves 🧤", "Hat 👒")
-                }
-            }
+        weatherTag.add(currentWeatherTimeOfDayTag)
+        weatherTag.add(temperatureTag)
 
-            temperature < WeatherConstants.COLD_TEMP -> {
-                if (timeOfDay == "morning") {
-                    listOf("Jacket 🧥", "Hoodie 👚", "Boots 👢")
+        val suggestedClothes= weatherRepository.filterClothes(weatherTag)
 
-                } else {
-                    listOf("Hoodie 👚", "Scarf 🧣")
-                }
-            }
-
-            temperature < WeatherConstants.WARM_TEMP -> {
-                if (timeOfDay == "morning") {
-                    listOf("Top 👚", "Trousers 👖")
-
-                } else {
-                    listOf("Hoodie 👚", "Trousers 👖")
-                }
-            }
-
-            else -> {
-                if (timeOfDay == "morning") {
-                    listOf("Dress 👗")
-
-                } else {
-                    listOf("Light Dress 👗")
-                }
-            }
-        }
-        return SuggestionClothes(
-            hour = hour,
-            temperature = temperature,
-            timeOfDay = timeOfDay,
-            suggestionClothes = suggestion
+        return SuggestedClothes(
+            currentWeatherTimeHour = currentWeather.time?.hour,
+            currentWeatherTemperature = currentWeather.temperature,
+            currentWeatherTimeOfDay = currentWeatherTimeOfDayTag,
+            suggestionClothes = suggestedClothes
         )
     }
 }
