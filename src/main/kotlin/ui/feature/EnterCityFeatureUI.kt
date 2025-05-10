@@ -18,7 +18,7 @@ class EnterCityFeatureUI(
         outputHandler.printMessage(CliConstants.ENTER_CITY_NAME_MESSAGE)
         while (true) {
             val userInput = userInputHandler.getUserInput()
-            if (userInput.isNullOrEmpty()) {
+            if (userInput.isNullOrBlank()) {
                 outputHandler.printMessage(CliConstants.ENTER_VALID_CITY_NAME_MESSAGE)
             } else {
                 return userInput

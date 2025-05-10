@@ -1,6 +1,6 @@
 package logic.model
 
 data class CityLocation(
-    val latitude: Double,
-    val longitude: Double
+    val latitude: Double? = null,
+    val longitude: Double? = null
 )
