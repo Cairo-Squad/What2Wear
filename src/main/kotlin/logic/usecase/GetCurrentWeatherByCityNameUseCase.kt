@@ -1,13 +1,13 @@
 package logic.usecase
 
-import logic.model.CityLocation
 import logic.model.CurrentWeather
 import logic.repository.WeatherRepository
 
-class GetCurrentWeatherUseCase(
+class GetCurrentWeatherByCityNameUseCase(
     private val repository: WeatherRepository
 ) {
-    suspend fun getCurrentWeather(cityLocation: CityLocation): CurrentWeather {
+    suspend fun getCurrentWeather(cityName: String): CurrentWeather {
+        val cityLocation = repository.getCityLocationByName(cityName)
         return repository.getWeatherFromRemote(cityLocation)
     }
 }
