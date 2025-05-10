@@ -35,14 +35,29 @@ jobs:
       - name: Extract coverage percentage
         id: coverage
         run: |
-          COVERED=$(grep -oPm1 '(?<=<counter type="LINE" covered=")\d+' build/reports/kover/report.xml)
-          MISSED=$(grep -oPm1 '(?<=<counter type="LINE" missed=")\d+' build/reports/kover/report.xml)
-          TOTAL=$((COVERED + MISSED))
-          if [ "$TOTAL" -eq 0 ]; then
-            PERCENTAGE=0
-          else
-            PERCENTAGE=$((COVERED * 100 / TOTAL))
+          REPORT_PATH=build/reports/kover/report.xml
+
+          if [ ! -f "$REPORT_PATH" ]; then
+          echo "❌ Coverage report not found at $REPORT_PATH"
+          exit 1
           fi
+      
+          if ! grep -q '<counter type="LINE"' "$REPORT_PATH"; then
+          echo "❌ No LINE counter found in $REPORT_PATH"
+          cat "$REPORT_PATH"
+          exit 1
+          fi
+      
+          COVERED=$(grep -oPm1 '(?<=<counter type="LINE" covered=")\d+' "$REPORT_PATH")
+          MISSED=$(grep -oPm1 '(?<=<counter type="LINE" missed=")\d+' "$REPORT_PATH")
+          TOTAL=$((COVERED + MISSED))
+      
+          if [ "$TOTAL" -eq 0 ]; then
+          PERCENTAGE=0
+          else
+          PERCENTAGE=$((COVERED * 100 / TOTAL))
+          fi
+      
           echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
 
       - name: Comment on PR with coverage
