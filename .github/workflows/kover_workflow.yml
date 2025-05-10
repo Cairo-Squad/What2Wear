@@ -37,19 +37,24 @@ jobs:
         run: |
           REPORT_PATH=build/reports/kover/report.xml
 
+          echo "📄 Checking report file..."
           if [ ! -f "$REPORT_PATH" ]; then
           echo "❌ Coverage report not found at $REPORT_PATH"
           exit 1
           fi
       
-          if ! grep -q '<counter type="LINE"' "$REPORT_PATH"; then
-          echo "❌ No LINE counter found in $REPORT_PATH"
-          cat "$REPORT_PATH"
+          echo "✅ Report found. Previewing..."
+          head -n 20 "$REPORT_PATH"
+      
+          echo "🔍 Extracting covered and missed line counts..."
+          COVERED=$(awk -F'"' '/<counter type="LINE"/ { for(i=1;i<=NF;i++) if ($i=="covered") print $(i+2) }' "$REPORT_PATH")
+          MISSED=$(awk -F'"' '/<counter type="LINE"/ { for(i=1;i<=NF;i++) if ($i=="missed") print $(i+2) }' "$REPORT_PATH")
+      
+          if [ -z "$COVERED" ] || [ -z "$MISSED" ]; then
+          echo "❌ Could not extract coverage values."
           exit 1
           fi
       
-          COVERED=$(grep -oPm1 '(?<=<counter type="LINE" covered=")\d+' "$REPORT_PATH")
-          MISSED=$(grep -oPm1 '(?<=<counter type="LINE" missed=")\d+' "$REPORT_PATH")
           TOTAL=$((COVERED + MISSED))
       
           if [ "$TOTAL" -eq 0 ]; then
@@ -58,6 +63,7 @@ jobs:
           PERCENTAGE=$((COVERED * 100 / TOTAL))
           fi
       
+          echo "📊 Coverage: $PERCENTAGE%"
           echo "percentage=$PERCENTAGE" >> $GITHUB_OUTPUT
 
       - name: Comment on PR with coverage
