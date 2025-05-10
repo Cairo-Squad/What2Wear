@@ -46,15 +46,20 @@ jobs:
           echo "✅ Report found. Previewing..."
           head -n 20 "$REPORT_PATH"
       
-          echo "🔍 Extracting covered and missed line counts..."
-          COVERED=$(awk -F'"' '/<counter type="LINE"/ { for(i=1;i<=NF;i++) if ($i=="covered") print $(i+2) }' "$REPORT_PATH")
-          MISSED=$(awk -F'"' '/<counter type="LINE"/ { for(i=1;i<=NF;i++) if ($i=="missed") print $(i+2) }' "$REPORT_PATH")
+          echo "🔍 Installing xmllint..."
+          sudo apt-get update && sudo apt-get install -y libxml2-utils
       
-          if [ -z "$COVERED" ] || [ -z "$MISSED" ]; then
-          echo "❌ Could not extract coverage values."
+          echo "🔍 Extracting coverage from last <counter type=\"LINE\"> element..."
+          LINE_COUNTER=$(xmllint --xpath 'string(//counter[@type="LINE"][last()]/@covered)' "$REPORT_PATH")
+          LINE_MISSED=$(xmllint --xpath 'string(//counter[@type="LINE"][last()]/@missed)' "$REPORT_PATH")
+      
+          if [ -z "$LINE_COUNTER" ] || [ -z "$LINE_MISSED" ]; then
+          echo "❌ Failed to extract coverage numbers."
           exit 1
           fi
       
+          COVERED=$LINE_COUNTER
+          MISSED=$LINE_MISSED
           TOTAL=$((COVERED + MISSED))
       
           if [ "$TOTAL" -eq 0 ]; then
