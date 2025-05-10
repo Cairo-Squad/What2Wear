@@ -21,6 +21,7 @@ class WeatherSuggestionExecutor(
                 val suggestion = clothingSuggestionUseCase.suggestClothes(cityCurrentWeather)
                 outputHandler.printlnMessage()
                 outputHandler.printlnMessage(CliConstants.SUGGESTION_TITLE)
+                outputHandler.printlnMessage("${CliConstants.CITY_NAME_MESSAGE}$cityName")
                 outputHandler.printlnMessage(suggestion.getPrintableString())
             } catch (exception: NetworkException) {
                 outputHandler.printlnMessage(exception.message)
