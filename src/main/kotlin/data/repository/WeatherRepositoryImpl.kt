@@ -1,6 +1,5 @@
 package data.repository
 
-import data.datasource.SuggestionClothesDataSource
 import logic.model.CityLocation
 import logic.model.CurrentWeather
 import logic.repository.WeatherRepository
@@ -44,6 +43,7 @@ class WeatherRepositoryImpl(
             throw when (exception) {
                 is IOException -> NetworkException()
                 is NullPointerException, is SerializationException, is FetchingWeatherException -> FetchingWeatherException()
+                is NoClothesFoundException -> NoClothesFoundException()
                 else -> UnexpectedErrorException()
             }
         }

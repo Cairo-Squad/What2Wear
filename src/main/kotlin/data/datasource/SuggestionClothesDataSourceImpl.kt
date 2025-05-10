@@ -1,10 +1,10 @@
 package data.datasource
 
+import data.repository.SuggestionClothesDataSource
 import logic.model.Clothes
 import logic.usecase.WeatherConstants
-import logic.utils.NoClothesFoundException
 
-class SuggestionClothesDataSource {
+class SuggestionClothesDataSourceImpl: SuggestionClothesDataSource {
     private val clothesSuggestion: List<Clothes> = listOf(
         Clothes(name = "Coat 🧥", tags = listOf(WeatherConstants.FREEZING_TAG, WeatherConstants.MORNING, WeatherConstants.NIGHT)),
         Clothes(name = "Scarf 🧣", tags = listOf(WeatherConstants.FREEZING_TAG, WeatherConstants.COLD_TAG, WeatherConstants.NIGHT)),
@@ -20,11 +20,11 @@ class SuggestionClothesDataSource {
         Clothes(name = "T-Shirt 👕", tags = listOf(WeatherConstants.HOT_TAG, WeatherConstants.WARM_TAG, WeatherConstants.MORNING, WeatherConstants.NIGHT)),
         Clothes(name = "Shorts 🩳", tags = listOf(WeatherConstants.HOT_TAG, WeatherConstants.WARM_TAG, WeatherConstants.MORNING))
     )
-    fun filterClothes(weatherTag : List<String>) : List<String>? {
+
+    override fun filterClothes(weatherTag: List<String>): List<String>? {
         return clothesSuggestion
             .filter { clothes -> weatherTag.all { tag -> clothes.tags.contains(tag.lowercase()) } }
             .map { it.name }
-            .takeIf { it.isNotEmpty()
-            }
+            .takeIf { it.isNotEmpty() }
     }
 }
