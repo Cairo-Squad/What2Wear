@@ -1,5 +1,6 @@
 package data.repository
 
+import data.datasource.SuggestionClothesDataSource
 import logic.model.CityLocation
 import logic.model.CurrentWeather
 import logic.repository.WeatherRepository
@@ -10,9 +11,11 @@ import kotlinx.serialization.SerializationException
 import logic.utils.FetchingWeatherException
 import logic.utils.NetworkException
 import logic.utils.UnexpectedErrorException
+import logic.utils.NoClothesFoundException
 
 class WeatherRepositoryImpl(
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val suggestionClothesDataSource: SuggestionClothesDataSource
 ) : WeatherRepository {
 
     override suspend fun getCityLocationByName(cityName: String): CityLocation {
@@ -27,6 +30,11 @@ class WeatherRepositoryImpl(
             remoteDataSource.getWeatherByLocation(cityLocation).currentWeather?.toCurrentWeather()
                 ?: throw FetchingWeatherException()
         }
+    }
+
+    override fun filterClothes(weatherTag: List<String>): List<String>? {
+        return suggestionClothesDataSource.filterClothes(weatherTag)
+            ?: throw NoClothesFoundException()
     }
 
     private suspend fun <T> wrapCallWithTry(call: suspend () -> T): T {
